@@ -6,4 +6,473 @@ class: center, middle
 
 # Git Basics
 
-Work In Progress
+---
+
+# Objectives
+
+1. Know git basic commands and usage
+1. Be autonomous to collaborate inside a development team using Git
+1. Know some Git tools
+
+---
+
+# Target audience
+
+* All persons collaborating to write code or things related to code
+
+* Developers, software architects, experts
+    * Junior or senior
+    * Preferred technology or development language is not relevant
+
+* Reading English (for documentation)
+
+---
+
+# Content
+
+1. Version control introduction
+1. Git basic concepts
+1. Using branches
+1. The staging zone
+1. Merging and conflicts
+1. Quality best practices
+1. Some tools
+
+---
+
+class: center, middle
+
+# Version control introduction
+
+---
+
+# Definition
+
+> A component of software configuration management, version control, also known as revision control or source control,
+is the management of changes to documents, computer programs, large web sites, and other collections of information.
+Changes are usually identified by a number or letter code, termed the "revision number", "revision level", or simply "revision".
+Each revision is associated with a timestamp and the person making the change.
+Revisions can be compared, restored, and with some types of files, merged.
+
+Source: [Wikipedia, Version Control](https://en.wikipedia.org/wiki/Version_control)
+
+---
+
+# Main principles
+
+* Each file update is tracked
+
+* Updates are ordered by time, making an history
+
+* The person who made the update is identified
+
+* Simultaneous updates on several files may be grouped inside a single revision
+
+* Updated made by several persons on the same projects are merged
+
+* Every previous revision can be restored
+
+---
+
+# Development process using a version control system
+
+1. Someone from the project team checks out the latest revision of the project
+1. He/she updated one or several files
+1. He/she saves the new revision with all his/hers updated, with a comment
+1. He/she communicates the updates to the other members of the team
+1. The updates are merged with the updates from the other team members
+1. If the updates can't be merged automatically, its a *conflict*: it must be resolved manually.
+
+---
+
+# Version control usages
+
+* Not only for code:
+    * "documentation as code"
+    * Small and static resources associated with code (images, small binaries)
+
+* Do NOT use VCS for:
+    * Compiled code (packages, libraries, ...)
+    * Huge binaries or binaries that change really often (there are specialized system to manage this type of content)
+
+---
+
+# Why should I use a VCS?
+
+* Automatic code and project backup
+
+* Easier collaboration between team members
+
+* Easier code understanding (through revision comments)
+
+* Work simultaneously on different versions, and handle merge easily
+
+* Pre-requisite to continuous integration
+
+* Easier bug fixes
+
+---
+
+# Centralized / distributed
+
+There are 2 VCS types: centralized, and distributed
+
+**Centralized**:
+A central server is the reference repository. Team members can not share code without the central server.
+
+**Distributed**:
+Each team member has a full copy of the files and their history. Everybody can work and share code without being dependent
+of a central server.
+
+---
+
+# Some VCS tools
+
+**Centralized**:
+
+* Concurrent Versions System (CVS)
+* SubVersioN (SVN)
+
+**Distributed**:
+
+* Git
+* Mercurial
+
+**Proprietary software**:
+
+* IBM ClearCase
+* Microsoft Team Foundation Server (TFS)
+
+**Images and sound**:
+
+* AlienBrain
+* Perforce
+
+---
+
+class: center, middle
+
+# Git concepts
+
+---
+
+# Objectives
+
+Know the main concepts of Git:
+
+* distributed
+
+* diff storage
+
+* the zones
+    * working directory
+    * index / stage
+    * repository
+
+* the states
+    * not versioned
+    * updated
+    * staged
+    * not updated
+
+---
+
+# Git
+
+* Git was created by Linus Torvalds on 2005
+
+* Git is distributed
+    * Each team member has a local copy of the repository
+    * A network connexion is used only to share updated with other members
+    * A same local repository may have several remote repositories
+
+* Only file updates are stored
+    * Network traffic is really small
+    * Easier merge of updates
+
+* Fully configurable
+    * No constraints, only "default choices"
+
+---
+
+# Vocabulary
+
+**Commit**: Saving some updates on one or several files in local repository history
+
+**Branch**: Several commits, linked by "parent-of" relationships, through an "initial commit"
+
+**Merge**: Merge, inside the history, several commits from different sources (local and remote, or different branches)
+
+**Push**: Publish local commits to a remote repository
+
+**Pull**: Get locally the updates published by other team members on the remote repository
+
+---
+
+# Git as a graph
+
+Commits are the nodes of the graph.
+
+![Git graph](images/git_graph.png)
+
+---
+
+# Local repository
+
+* Local data is always in a local repository
+
+* Local repository is a directory on filesystem, which contains:
+    * Versioned files
+    * A unique git configuration directory (`.git`)
+
+* `.git` directory contains:
+    * Remote repository/ies configuration
+    * Reference index (eg. branches and commit ids)
+    * Updates history
+
+---
+
+class: tp
+
+# Init the local repository 1/2
+
+From an empty directory:
+
+```
+$ mkdir git-workshop-1
+$ cd git-workshop-1
+$ git init
+Dépôt Git vide initialisé dans /tmp/git-workshop-1/.git/
+```
+
+---
+
+class: tp
+
+# Init the local repository 2/2
+
+From a remote repository:
+
+```
+$ git clone https://some-remote.repo/depot_workshop_1
+Cloning into 'depot_workshop_1'...
+remote: Counting objects: 62, done.
+remote: Compressing objects: 100% (29/29), done.
+remote: Total 62 (delta 26), reused 62 (delta 26), pack-reused 0
+Receiving objects: 100% (62/62), 6.33 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (26/26), done.
+Checking connectivity... done.
+```
+
+Protocol:
+
+* HTTPS with login and password
+* SSH with pair of key (better security and easier usage)
+
+Checks out de repository default branch. Default name: `master`.
+
+---
+
+# The zones
+
+Git has 3 zones:
+
+* Working directory
+* Git directory
+* index zone, or staging zone
+
+The *Working directory* is where all project files (.java, .sh, .html, ...) are stored locally.
+When a team member works, he/she updates files in this directory.
+
+The *Git directory* is alwyas named `.git` and is at the root of the working directory.
+It contains git metadata and the history.
+
+The *Index zone*, or *Staging zone*, if a file stored in the *Git directory*.
+It contains all the updates selected to be included in the next commit.
+
+---
+
+class: center
+
+# The zones
+
+![Communications between zones](images/zones_communication.png)
+
+---
+
+class: center
+
+# Zones and commands
+
+![Commands between zones](images/zones_commands.png)
+
+---
+
+# Saving updates
+
+2 steps:
+
+1. Select the files to be included in the commit, and index them:
+
+```
+$ vi COMMIT.md
+$ git add COMMIT.md
+```
+
+2. Commits changes:
+
+```
+$ git commit -m "Création du fichier COMMIT"
+[master (commit racine) 03ef10c] Création du fichier COMMIT
+1 file changed, 2 insertions(+)
+create mode 100644 COMMIT.md
+```
+
+---
+
+# Update the last commit
+
+The last **local commit** can be ammended to add updates or to change the commit message.
+
+```
+$ vi COMMIT.md
+$ git add COMMIT.md
+$ git commit -m "Création du fichier COMMIT avec 1 titre" --amend
+[master 0923b76] Création du fichier COMMIT avec 1 titre
+Date: Thu Mar 24 22:16:46 2016 +0100
+1 file changed, 6 insertions(+)
+create mode 100644 COMMIT.md
+```
+
+Don't forget to reindex all files that must be added to the commit, even if those files were already in the initial commit!
+
+---
+
+# Ignore a file
+
+File named `.gitignore`, at the root level of the working directory.
+
+Add files and paths to ignore in this file.
+
+Supports wildcards (*)
+
+```
+# IntelliJ
+*.iml
+.idea
+
+# Maven
+target/
+/.m2
+
+# Eclipse
+.project
+.settings
+.classpath
+```
+
+---
+
+# File states
+
+A file in the *working directory* can be...
+
+* not versioned
+* unchanged
+* updated
+* indexed
+
+![File states](images/file_states.png)
+
+---
+
+# Check local repository status
+
+`git status`: shows not versioned, updated and indexed files.
+
+```
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+modifié :	UPDATED.md
+nouveau fichier :	NEW.md
+Modifications qui ne seront pas validées :
+modifié :	COMMIT.md
+Fichiers non suivis:
+STATUS.md
+```
+
+---
+
+# Use history 1/2
+
+`git log`: Shows history, with more or less details depending on options
+
+```
+$ git log
+commit 5bfc6579c4f7d4e57e2148346c30b9a580c89579 (HEAD -> master, origin/master, origin/HEAD)
+Author: clvi <contact@clvi.eu>
+Date:   Mon Jan 6 13:29:38 2020 +0100
+
+Add CSS style for slides
+
+commit a4c77c57e33ed87e4250615bd5f1b5b01d74e2b8
+Author: clvi <contact@clvi.eu>
+Date:   Mon Jan 6 12:55:40 2020 +0100
+
+Add slideshow for Git basics
+
+[…]
+```
+
+---
+
+# Use history 2/2
+
+```
+$ git log --graph --decorate --pretty=oneline --abbrev-commit --all
+* 5bfc657 (HEAD -> master, origin/master, origin/HEAD) Use CSS to include FR and UK flags and align them with text
+* a4c77c5 Programmez article (#1)
+* 2742f4c Rename GitHub user to clvi
+* 641f083 Git trainer experience
+* 355dda2 Protect against phishing attacks from external links opened in new tags
+* 538bce3 Replace i tags by span tag for FontAwesome icons
+* d322bae Open navbar external links on new tab
+* b7e286b Use bigger banner files for ELK, HZ Jet and Android to displya them on post page
+* 4fe3dfc Use same banner size for all posts on portfolio page
+* 06b22ea Add LyonJUG and clvi.eu websites projects in portfolio. Add banner support in post layout
+* eacb444 Add resume using blog posts and categories
+* 2435256 Fix responsiveness and div centering on XS devices, and div spacing on wider devices
+* d44d8c0 Fix links on portfolio page (open in a new tab only for external links)
+* a3c0b64 Add OPE banner
+* 61e69ad Portfolio page based on posts
+* 56c69c0 Add contact page. Cleanup home page. Init portfolio.
+* f0af69e Add legal terms. Use vars for name, email and site title.
+* a98d798 Smaller footer image and font. Update CC image link (moved permanently). Add favicon.
+* 57d5941 Create CNAME
+* 221a244 Init Jekyll, Boostrap and FontAwesome. Start a Home page with some basic info.
+* d001d0d Add CC-BY-NC-SA License file
+* 3c35adf Initial commit
+```
+
+---
+
+class: tp
+
+# Save changes
+
+* Go to directory `depot_workshop_1`
+
+* Create a file named `your_name.md`
+
+* Index the file
+
+* Check repository status
+
+* Commit
+
+* Check history
+
+---
+
+Work in progress
