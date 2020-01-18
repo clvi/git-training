@@ -1154,6 +1154,8 @@ Merge branch 'dev_feature' into developpement
 
 class: tp
 
+# Conflict resolution
+
 Clone repository `depot_workshop_merge`
 
 Switch to branch `development`
@@ -1210,3 +1212,84 @@ git config --global merge.tool meld
 git config --global --add merge.prompt false
 ```
 
+---
+
+class: center, middle
+
+# Git and code quality
+
+---
+
+# Objectives
+
+Get some insight about using Git on a real project
+
+The interest of Git to help people collaborate on a project
+
+---
+
+# What is a Git workflow?
+
+A *Git workflow* is a Git branch management strategy, applied to a repository and a project.
+It describes:
+
+* when branches are created and merged
+* on which branch each person should push its code
+* the role of the repository main branches
+* the naming convention to use to name branches
+* the commit message writing convention
+* the code review and validation process
+* ...
+
+---
+
+# Why should we use branches on our project?
+
+* An unstable development does not impact other persons
+
+* Identify easy which commit solved which ticket (feature branches)
+
+* Ensure main branches stability, using code review and/or continuous integration
+
+* Put aside some work, switch to another feature or bug fix, and come back easily
+
+---
+
+# What is a pull request / merge request?
+
+A *pull request*, or *merge request*, is made when a developers asks to merge a branch he/she created to one of the main branches of the project.
+
+A pull request must be reviewed and approved before being merged.
+Validation may include:
+
+- code reading and validation, by one or more persons
+- automatic build and test execution by a continous integration system
+- static code analysis
+- insurance that documentation is up-to-date with the proposed changes
+- ...
+
+Once approved, the source branch of the pull request is merges to the target branch.
+The code it contained is now available for everyone.
+Frequently, the source branch is then deleted.
+
+---
+
+# Why should we use pull requests?
+
+From the developer point of view:
+- less conflicts between features developed at the same time
+- better code quality
+- skill improvement by reading other people's code
+
+From the project leader point of view:
+- knowledge sharing
+- best practices sharing
+- better code stability and quality
+
+---
+
+# How to add pull requests to a project?
+
+Use some Git repository managers, like GitHub, GitLab, BitBucket, ...
+
+Use IDE features, like IntelliJ, ...
