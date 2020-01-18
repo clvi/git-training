@@ -892,3 +892,178 @@ Add a tag named `tagname` with comment: `$ git tag -a tagname -m "comment on tag
 
 Push tag to remote repository: `$ git push --tags`
 
+---
+
+class: center, middle
+
+# The Staging zone
+
+---
+
+# Objectives
+
+Understand the staging zone usage, to master code sharing
+
+---
+
+# The staging zone
+
+The staging zone is a file inside the *Git directory* `.git`
+
+The staging zone contains all updated selected to be a part of the newt *commit*.
+
+Updates can be added, removed, changed, to build the next commit.
+
+---
+
+class: center
+
+# The zones
+
+![Communications between zones](images/zones_communication.png)
+
+
+---
+
+# File states
+
+A file in the *working directory* can be...
+
+* not versioned
+* unchanged
+* updated
+* indexed
+
+![File states](images/file_states.png)
+
+---
+
+# Read staging zone content
+
+`$ git status`
+
+```
+$ git status
+Sur la branche master
+Modifications qui seront validées :
+    modifié :	UPDATED.md
+    nouveau fichier :	NEW.md
+Modifications qui ne seront pas validées :
+    modifié :	COMMIT.md
+Fichiers non suivis:
+    STATUS.md
+```
+
+---
+
+# Handling of directories
+
+Git ignores empty directories.
+To add them, create a file named `.empty` inside the directory.
+
+```
+$ touch emptyDir/.empty
+$ git add emptyDir/.empty
+$ git status
+Sur la branche master
+Modifications qui ne seront pas validées :
+    nouveau fichier : emptyDir/.empty
+```
+
+---
+
+# Update content of the staging zone
+
+Add a new file: `git add thefile`
+
+Add all new files: `git add --all` or `git add -A`
+
+Add only *some* updates made on a file: `git add -i thefile`
+
+Move a file: `git mv oldfile newfile`
+
+Delete a file: `git rm thefile`
+
+Remove a file from staging zone without reverting its updates: `git reset thefile`
+
+Cancel all uncommited updated on all project: `git reset --hard HEAD`
+
+*Use the last one carefully, as you will lose your work!*
+
+---
+
+class: tp
+
+# Use the staging zone
+
+Clone repo TODO/depot_workshop_2
+
+Switch to branch `sw-exercice-staging`
+
+Create a new branch named `sw-exercice-staging-yourname`
+
+Delete file `deprecated.txt`
+
+Rename file `foo.txt` to `bar.txt`
+
+Add a file named `yourname.txt`
+
+Commit all the updates
+
+Push to the remote repository, to a branch named `sw-exercice-staging-yourname`
+
+---
+
+class: tp
+
+# Interactive add 1/2
+
+Edit file `README.md` and replace 2 lines, at 2 different places of the file, by something else.
+
+Index the first update only
+
+```
+$ git add -i README.md
+What now> p
+Patch update>> 1
+Patch update>> (Enter)
+-PATTERN1
++Cool modif 1
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? ? #(too see help)
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? y
+-PATTERN2
++Cool modif 2
+Stage this hunk [y,n,q,a,d,/,K,g,e,?]? n
+What now> q
+Bye.
+```
+
+---
+
+class: tp
+
+# Interactive add 2/2
+
+Commit the first update
+
+```
+$ git commit -m "cool update 1"
+[sw-exercice-staging-yourname 72cdf66] cool update 1
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+Index the whole file and commit
+
+```
+$ git add README.md
+$ git commit -m "cool update 2"
+[sw-exercice-staging-yourname ea94abb] cool update 2
+1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+Push
+
+```
+$ git push origin sw-exercice-staging-yourname
+```
+
