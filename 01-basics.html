@@ -546,5 +546,349 @@ class: tp
 
 * Send updates to remote repository
 
+---
 
+class: middle, center
+
+# Branches
+
+---
+
+# Objectives
+
+* Create branches and share them remotely
+
+* Get a remote branch
+
+* Merge branches
+
+* Move commits through history
+
+* Create and read tags
+
+---
+
+# Branches
+
+* Git main asset
+
+* No constraints
+
+* Switch from a branch to another very quickly
+
+* Easy merges and conflits solving
+
+* Each team member works on his branch
+
+---
+
+# Graph structure
+
+![Git graph](images/git_graph.png)
+
+* Commits are graph nodes, branches are links between nodes
+
+---
+
+# Branches operations
+
+* List local and remote branches
+
+* Create local branches
+
+* Delete local branches
+
+* Share a local branch to a remote repository
+
+* Switch between branches
+
+* Merge commits between 2 branches
+
+* Copy a commit from a branch to another (*cherry-pick*)
+
+* Change commit order on a branch (*rebase*)
+
+---
+
+# List local and remote branches
+
+List local branches
+
+```
+$ git branch
+* master
+```
+
+List remote branches
+
+```
+$ git branch –r
+origin/HEAD -> origin/master
+origin/master
+origin/sw-base-exercice-push
+origin/sw-branching-exercice
+origin/sw-merge
+origin/sw-merge-ff
+origin/sw-rebase
+origin/sw-rebase-interactif
+```
+
+---
+
+# List all branches
+
+```
+$ git branch –a
+* master
+remotes/origin/HEAD -> origin/master
+remotes/origin/master
+remotes/origin/sw-base-exercice-push
+remotes/origin/sw-branching-exercice
+remotes/origin/sw-merge
+remotes/origin/sw-merge-ff
+remotes/origin/sw-rebase
+remotes/origin/sw-rebase-interactif
+```
+
+---
+
+# Create / Delete a local branch
+
+Create a branch
+
+```
+$ git branch sw-demo
+
+$ git branch
+* master
+sw-demo
+```
+
+Delete a branch
+
+```
+$ git branch -d sw-demo
+Branche sw-demo supprimée (précédemment f1df95e).
+
+$ git branch
+* master
+```
+
+---
+
+# Switch between branches
+
+Create branch named `sw-checkout` and switch to it
+
+```
+$ git branch sw-checkout
+$ git checkout sw-checkout
+Basculement sur la branche 'sw-checkout'
+$ git branch
+master
+* sw-checkout
+```
+
+Create and switch at once
+
+```
+$ git checkout -b sw-create-checkout
+Basculement sur la nouvelle branche 'sw-create-checkout' $ git branch
+master
+sw-checkout
+* sw-create-checkout
+```
+
+Create and switch at once, to a branch linked to a remote branch
+
+```
+$ git checkout -b sw-branching-exercice origin/sw-branching-exercice
+La branche sw-branching-exercice est paramétrée pour suivre la branche distante sw-branching-exercice depuis origin.
+Basculement sur la nouvelle branche 'sw-branching-exercice'
+```
+
+---
+
+# Merge VS rebase
+
+**Merge**: Merge commits from a branch to another branch
+
+![Branch merge](images/branch_merge.png)
+
+**Rebase**: Move the starting point of a branch after some other commits
+
+![Branch rebase](images/branch_rebase.png)
+
+---
+
+# Merge
+
+Merge branch `sw-merge` to master
+
+*Note: you must always switch to the destination branch before merging*
+
+```
+$ git checkout master
+Basculement sur la branche 'master'
+Votre branche est à jour avec 'origin/master'.
+```
+
+```
+$ git merge origin/sw-merge --no-ff
+Merge made by the 'recursive' strategy.
+merge.md | 12 ++++++++++++
+1 file changed, 12 insertions(+)
+create mode 100644 merge.md
+```
+
+---
+
+# Rebase
+
+**You must NEVER do a rebase on a branch used by somebody else !**
+
+```
+$ git checkout sw-rebase
+La branche sw-rebase est paramétrée pour suivre la branche distante sw-rebase depuis origin.
+Basculement sur la nouvelle branche 'sw-rebase'
+
+$ git rebase master
+Premièrement, rembobinons head pour rejouer votre travail par-dessus...
+Application : ajout des informations de base pour le rebase de branche
+```
+
+---
+
+# Rebase - Before / After
+
+Before
+
+```
+$ git log --graph --decorate --pretty=oneline --abbrev-commit –all
+
+
+* a14120f (master) a
+* f09dc69 b
+* 38e2d7d (origin/master, origin/HEAD) c
+| * ca0708f (origin/br) d
+| * 0e80220 e
+| | * 2879271 (HEAD -> sw-rebase, origin/sw-rebase) f
+| |/
+|/|
+* | f1df95e (origin/sw-base-exercice-push) g
+* | a1890c4 h
+|/
+* fc523d6 i
+```
+
+After
+
+```
+$ git log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+* 47144a2 (HEAD -> sw-rebase) f
+* a14120f (master) a
+* f09dc69 b
+* 38e2d7d (origin/master, origin/HEAD) c
+| * ca0708f (origin/br) d
+| * 0e80220 e
+| | * 2879271 (origin/sw-rebase) f
+| |/
+|/|
+* | f1df95e (origin/sw-base-exercice-push) g
+* | a1890c4 h
+|/
+* fc523d6 i
+
+```
+
+---
+
+class: tp
+
+# Rebase exercise
+
+* Go to directory `depot_workshop_1`
+
+* Switch to a new branch names `sw-branching-exercice`, linked to the remote branch
+
+* Merge commits from `master` to `sw-branching-exercice`
+
+* Merge commits from `sw-branching-exercice` to `master`
+
+* Don't push ;)
+
+---
+
+# Push a branch to remote repository
+
+Push and create a new remote branch
+
+```
+$ git push origin sw-branch-to-push
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 270 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+To git@github.com:clvi/depot_workshop_1.git
+* [new branch] sw-branch-to-push -> sw-branch-to-push
+```
+
+---
+
+# Get updates from remote branch
+
+While being on a local branch, configured to track a remote branch, the remote branch have some new commits.
+
+```
+$ git pull origin sw-branch-to-push
+Depuis github.com:clvi/depot_workshop_1
+* branch sw-branch-to-push -> FETCH_HEAD
+Successfully rebased and updated refs/heads/sw-branch-to-push
+```
+
+---
+
+# Discover new remote branches
+
+Update local references without updating files
+
+```
+$ git fetch
+From github.com:clvi/depot_workshop_1
+* [new branch] sw-push-foo-bar -> origin/sw-push-foo-bar
+```
+
+---
+
+class: tp
+
+# Exercice - Push / Pull
+
+* Go to directory `depot_workshop_1`
+
+* Create a branch named `sw-yourname` from `origin/master`
+
+* Create a file named `attendee.md` and put your name inside
+
+* Create a file named `yourname-branches.md`,
+list all remote branches and put the list on the file
+
+* Commit and push all your work on a new remote branch named `sw-yourname`
+
+---
+
+# Tags
+
+Tags are references to a given commit
+
+List tags: `$ git tag`
+
+Get the content of tag `tagname`: `$ git checkout tagname`
+
+Add a tag named `tagname` with comment: `$ git tag -a tagname -m "comment on tag"`
+
+Push tag to remote repository: `$ git push --tags`
 
