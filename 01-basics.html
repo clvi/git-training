@@ -1067,3 +1067,146 @@ Push
 $ git push origin sw-exercice-staging-yourname
 ```
 
+---
+
+class: center, middle
+
+# Merging and handling conflicts
+
+---
+
+# Objectives
+
+Be able to resolve conflicts during merges
+
+Configure a graphical tool to resolve conflicts
+
+---
+
+# When is there a conflict?
+
+![Conflict](images/conflict.png)
+
+---
+
+# Handling conflict
+
+```
+$ git merge --no-ff featureX
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+Merge manually
+
+```
+Exercice de gestion des conflits
+--
+Modification réalisée sur la branche de développement
+<<<<<<< HEAD
+Complément sur la branche de dev
+=======
+Modification faite sur featureX
+>>>>>>> featureX
+```
+
+Result
+
+```
+Exercice de gestion des conflits
+--
+Modification réalisée sur la branche de développement
+Complément sur la branche de dev
+Modification faite sur featureX
+```
+
+---
+
+# Commit conflict resolution
+
+```
+$ git commit –a
+[dev dc90c5a] Merge branch 'featureX' into dev
+```
+
+```
+Merge branch 'dev_feature' into developpement
+
+# Conflicts:
+#       README.md
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#       .git/MERGE_HEAD
+# and try again.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch developpement
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#       modified:   README.md
+```
+
+---
+
+class: tp
+
+Clone repository `depot_workshop_merge`
+
+Switch to branch `development`
+
+Merge branch `dev_feature` to `development`, and resolve the conflict
+
+---
+
+# git Difftool
+
+`$ git difftool`
+
+On Windows: use Winmerge
+
+- Add path to WinMerge on PATH variable, on `~/.bashrc`:
+
+`export PATH=$PATH:/c/Program\\ Files\\ \\(x86\\)/WinMerge/`
+
+- Configure git to use WinMerge:
+
+```
+git config --global diff.tool winmerge
+git config --global --add difftool.prompt false
+```
+
+On Linux: use Meld
+
+- Add Meld to the PATH
+
+- Configure git to use Meld:
+
+```
+git config --global diff.tool meld
+git config --global --add difftool.prompt false
+```
+
+---
+
+# Git Mergetool
+
+`$ git mergetool`
+
+On Windows: use TortoiseMerge
+
+```
+git config --global merge.tool tortoisemerge
+git config --global --add mergetool.prompt false
+```
+
+On Linux: use Meld
+
+```
+git config --global merge.tool meld
+git config --global --add merge.prompt false
+```
+
