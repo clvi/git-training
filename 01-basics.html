@@ -8,6 +8,18 @@ class: center, middle
 
 ---
 
+# Author
+
+This content has been created by [Claire Villard](https://www.clvi.eu/).
+
+It is open-source, and hosted on GitHub.
+
+Feel free to contribute: [clvi/git-training](https://github.com/clvi/git-training)
+
+To contact me about this content, please use GitHub issues, or refer to my [Contact page](https://www.clvi.eu/contact.html).
+
+---
+
 # Objectives
 
 1. Know git basic commands and usage
@@ -48,10 +60,16 @@ class: center, middle
 
 # Definition
 
-> A component of software configuration management, version control, also known as revision control or source control,
-is the management of changes to documents, computer programs, large web sites, and other collections of information.
+> A component of
+[software configuration management](https://en.wikipedia.org/wiki/Software_configuration_management)
+, **version control**, also known as **revision control** or **source control**,
+is the management of changes to documents,
+[computer programs](https://en.wikipedia.org/wiki/Computer_program)
+, large web sites, and other collections of information.
 Changes are usually identified by a number or letter code, termed the "revision number", "revision level", or simply "revision".
-Each revision is associated with a timestamp and the person making the change.
+Each revision is associated with a
+[timestamp](https://en.wikipedia.org/wiki/Timestamp)
+and the person making the change.
 Revisions can be compared, restored, and with some types of files, merged.
 
 Source: [Wikipedia, Version Control](https://en.wikipedia.org/wiki/Version_control)
@@ -126,28 +144,34 @@ of a central server.
 
 ---
 
+class: img-logo
+
 # Some VCS tools
 
+.column-left[
 **Centralized**:
 
-* Concurrent Versions System (CVS)
-* SubVersioN (SVN)
+![CVS](images/cvs.jpg)
+![SVN](images/svn.gif)
 
 **Distributed**:
 
-* Git
-* Mercurial
+![Git](images/git.jpg)
+![Mercurial](images/mercurial.png)
 
+]
+
+.column-right[
 **Proprietary software**:
 
-* IBM ClearCase
-* Microsoft Team Foundation Server (TFS)
+![ClearCase](images/clearcase.jpg)
+![TFS](images/tfs.png)
 
 **Images and sound**:
 
-* AlienBrain
-* Perforce
-
+![AlienBrain](images/alienbrain.gif)
+![Perforce](images/perforce.png)
+]
 ---
 
 class: center, middle
@@ -165,15 +189,8 @@ Know the main concepts of Git:
 * diff storage
 
 * the zones
-    * working directory
-    * index / stage
-    * repository
 
 * the states
-    * not versioned
-    * updated
-    * staged
-    * not updated
 
 ---
 
@@ -375,12 +392,7 @@ target/
 
 # File states
 
-A file in the *working directory* can be...
-
-* not versioned
-* unchanged
-* updated
-* indexed
+A file in the *working directory* can be *not versioned*, *unchanged*, *updated*, *indexed*.
 
 ![File states](images/file_states.png)
 
@@ -526,7 +538,7 @@ ea94abb..7be8c38 master -> master
 
 ---
 
-# Summary of communications with remote repository
+# Communications with a remote repository
 
 ![Push pull summary](images/push_pull_summary.png)
 
@@ -582,11 +594,11 @@ class: middle, center
 
 ---
 
+class: center
+
 # Graph structure
 
 ![Git graph](images/git_graph.png)
-
-* Commits are graph nodes, branches are links between nodes
 
 ---
 
@@ -761,10 +773,12 @@ Application : ajout des informations de base pour le rebase de branche
 
 # Rebase - Before / After
 
+.column-left[
 Before
 
 ```
-$ git log --graph --decorate --pretty=oneline --abbrev-commit –all
+$ git log --graph --decorate --all
+  --pretty=oneline --abbrev-commit
 
 
 * a14120f (master) a
@@ -772,35 +786,37 @@ $ git log --graph --decorate --pretty=oneline --abbrev-commit –all
 * 38e2d7d (origin/master, origin/HEAD) c
 | * ca0708f (origin/br) d
 | * 0e80220 e
-| | * 2879271 (HEAD -> sw-rebase, origin/sw-rebase) f
+| | * 2879271 (HEAD->rebase,origin/rebase) f
 | |/
 |/|
-* | f1df95e (origin/sw-base-exercice-push) g
+* | f1df95e (origin/sw-branch) g
 * | a1890c4 h
 |/
 * fc523d6 i
 ```
-
+]
+.column-right[
 After
 
 ```
-$ git log --graph --decorate --pretty=oneline --abbrev-commit --all
+$ git log --graph --decorate --all
+  --pretty=oneline --abbrev-commit
 
-* 47144a2 (HEAD -> sw-rebase) f
+* 47144a2 (HEAD -> rebase) f
 * a14120f (master) a
 * f09dc69 b
 * 38e2d7d (origin/master, origin/HEAD) c
 | * ca0708f (origin/br) d
 | * 0e80220 e
-| | * 2879271 (origin/sw-rebase) f
+| | * 2879271 (origin/rebase) f
 | |/
 |/|
-* | f1df95e (origin/sw-base-exercice-push) g
+* | f1df95e (origin/sw-branch) g
 * | a1890c4 h
 |/
 * fc523d6 i
-
 ```
+]
 
 ---
 
@@ -910,7 +926,7 @@ Understand the staging zone usage, to master code sharing
 
 The staging zone is a file inside the *Git directory* `.git`
 
-The staging zone contains all updated selected to be a part of the newt *commit*.
+The staging zone contains all updated selected to be a part of the next *commit*.
 
 Updates can be added, removed, changed, to build the next commit.
 
@@ -927,23 +943,15 @@ class: center
 
 # File states
 
-A file in the *working directory* can be...
-
-* not versioned
-* unchanged
-* updated
-* indexed
-
 ![File states](images/file_states.png)
 
 ---
 
 # Read staging zone content
 
-`$ git status`
-
 ```
 $ git status
+
 Sur la branche master
 Modifications qui seront validées :
     modifié :	UPDATED.md
@@ -959,6 +967,7 @@ Fichiers non suivis:
 # Handling of directories
 
 Git ignores empty directories.
+
 To add them, create a file named `.empty` inside the directory.
 
 ```
@@ -984,7 +993,8 @@ Move a file: `git mv oldfile newfile`
 
 Delete a file: `git rm thefile`
 
-Remove a file from staging zone without reverting its updates: `git reset thefile`
+Remove a file from staging zone without reverting its updates: <br />
+`git reset thefile`
 
 Cancel all uncommited updated on all project: `git reset --hard HEAD`
 
@@ -1010,7 +1020,7 @@ Add a file named `yourname.txt`
 
 Commit all the updates
 
-Push to the remote repository, to a branch named `sw-exercice-staging-yourname`
+Push to the remote repository
 
 ---
 
@@ -1183,10 +1193,6 @@ git config --global --add difftool.prompt false
 
 On Linux: use Meld
 
-- Add Meld to the PATH
-
-- Configure git to use Meld:
-
 ```
 git config --global diff.tool meld
 git config --global --add difftool.prompt false
@@ -1270,7 +1276,6 @@ Validation may include:
 
 Once approved, the source branch of the pull request is merges to the target branch.
 The code it contained is now available for everyone.
-Frequently, the source branch is then deleted.
 
 ---
 
@@ -1339,4 +1344,4 @@ GitHub, Atlassian BitBucket, GitLab...
 
 class: center, middle
 
-# End of Git Basics slideshow
+# End of Git Basics
