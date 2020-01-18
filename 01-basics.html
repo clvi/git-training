@@ -475,4 +475,76 @@ class: tp
 
 ---
 
-Work in progress
+# Communicate with remote repository
+
+Use `git push` to send local commited updates to remote repository
+
+Use `git pull` to get updates published by other team members from remote repository.
+It also merge them with local commits, if any.
+
+To get updates from remote repository without merging them with local commits, use `git fetch`.
+
+---
+
+# git fetch and pull example
+
+```
+$ git fetch
+From github.com:clvi/depot_workshop_1
+* [new branch] sw-push-foo-bar -> origin/sw-push-foo-bar
+```
+
+```
+$ git pull origin master
+Depuis github.com:clvi/depot_workshop_1
+* branch sw-push-test -> FETCH_HEAD
+094bba5..8f4d7cd master -> origin/master
+Updating 094bba5..8f4d7cd
+Fast-forward
+hello.md | 20 +
+ciao.md  | 22 +
+2 files changed, 42 insertions(+), 0 deletions(-)
+create mode 100644 hello.md
+create mode 100644 ciao.md
+```
+
+---
+
+# git push example
+
+```
+$ git push origin master
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 270 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+To git@github.com:clvi/depot_workshop_1.git
+ea94abb..7be8c38 master -> master
+```
+
+---
+
+# Summary of communications with remote repository
+
+![Push pull summary](images/push_pull_summary.png)
+
+---
+
+class: tp
+
+# Share updates
+
+* Go to directory `depot_workshop_1`
+
+* Get remote updates and merge them with local commits
+
+* Create a branch name `sw-push-yourname-yoursurname` using command:
+
+`$ git checkout –b sw-push-yourname-yoursurname`
+
+* Send updates to remote repository
+
+
+
